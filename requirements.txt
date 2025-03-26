@@ -1,0 +1,7 @@
+beautifulsoup4
+fake-useragent
+python-dateutil
+requests
+slack-sdk
+SQLAlchemy
+tzdata

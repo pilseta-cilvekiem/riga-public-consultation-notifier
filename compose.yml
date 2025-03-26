@@ -1,0 +1,16 @@
+services:
+  app:
+    build: .
+    env_file:
+      - .env
+    secrets:
+      - slack_bot_user_oauth_token
+    volumes:
+      - data:/app/data
+
+secrets:
+  slack_bot_user_oauth_token:
+    file: ./secrets/slack_bot_user_oauth_token
+
+volumes:
+  data:
