@@ -1,49 +1,25 @@
-import json
 from datetime import timedelta
-from os import environ
-from pathlib import Path
 
 import sqlalchemy
 import sqlalchemy.orm
-from sqlalchemy import create_engine
 
-from .enums.public_consultation_type import PublicConsultationType
 from .models.model_base import ModelBase
 from .models.public_consultation import PublicConsultation
+from .parameters import (
+    DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS,
+    ENABLED_PUBLIC_CONSULTATION_TYPES,
+)
 from .services.public_consultation_fetcher import PublicConsultationFetcher
 from .services.slack_notifier import SlackNotifier
-from .utils import get_current_time, get_optional_secret_value
+from .utils import create_sql_engine, get_current_time
 
 slack_notifier = SlackNotifier()
 try:
     with PublicConsultationFetcher() as public_consultation_fetcher:
-        sqlalchemy_driver = environ.get("SQLALCHEMY_DRIVER")
-        if sqlalchemy_driver:
-            sql_query_json = environ.get("SQLALCHEMY_QUERY_JSON")
-            sql_url = sqlalchemy.URL.create(
-                sqlalchemy_driver,
-                environ.get("SQLALCHEMY_USERNAME"),
-                get_optional_secret_value("sqlalchemy_password"),
-                environ.get("SQLALCHEMY_HOST"),
-                environ.get("SQLALCHEMY_PORT"),
-                environ.get("SQLALCHEMY_DATABASE"),
-                json.loads(sql_query_json) if sql_query_json else None,
-            )
-        else:
-            DATA_DIR = "data"
-            if not Path(DATA_DIR).is_dir():
-                raise FileNotFoundError(
-                    f'Cannot access database file - directory "{DATA_DIR}" does not exist in app directory'
-                )
-            sql_url = f"sqlite:///{DATA_DIR}/sqlite.db"
-        sql_engine = create_engine(sql_url)
+        sql_engine = create_sql_engine()
         ModelBase.metadata.create_all(sql_engine)
         with sqlalchemy.orm.Session(sql_engine) as sql_session:
-            for public_consultation_type in [
-                PublicConsultationType.ATTISTIBAS_PLANOSANAS_DOKUMENTI,
-                PublicConsultationType.PUBLISKAS_APSPRIESANAS,
-                PublicConsultationType.SAISTOSO_NOTEIKUMU_PROJEKTI,
-            ]:
+            for public_consultation_type in ENABLED_PUBLIC_CONSULTATION_TYPES:
                 public_consultations = (
                     public_consultation_fetcher.fetch_public_consultations(
                         public_consultation_type
@@ -58,9 +34,13 @@ try:
                     public_consultation.name = public_consultation.name
                     sql_session.merge(public_consultation)
                     sql_session.commit()
-            one_year_ago = get_current_time() - timedelta(days=365)
+            delete_inactive_public_consultations_older_than = (
+                get_current_time()
+                - timedelta(days=DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS)
+            )
             sql_session.query(PublicConsultation).filter(
-                PublicConsultation.last_fetched_at < one_year_ago
+                PublicConsultation.last_fetched_at
+                < delete_inactive_public_consultations_older_than
             ).delete()
             sql_session.commit()
 except Exception as e:

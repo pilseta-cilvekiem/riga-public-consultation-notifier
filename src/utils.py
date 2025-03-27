@@ -1,39 +1,42 @@
 from datetime import datetime
-from os import environ
 from pathlib import Path
-from typing import Optional
 from zoneinfo import ZoneInfo
 
-from .constants import SECRET_DIR
+import sqlalchemy
+
+from .parameters import (
+    DATA_DIR,
+    DEFAULT_SQL_URL,
+    SQLALCHEMY_DATABASE,
+    SQLALCHEMY_DRIVER,
+    SQLALCHEMY_HOST,
+    SQLALCHEMY_PORT,
+    SQLALCHEMY_QUERY,
+    SQLALCHEMY_USERNAME,
+    TIME_ZONE,
+    get_sqlalchemy_password,
+)
 
 
 def get_current_time():
-    return datetime.now(ZoneInfo("Europe/Riga"))
+    return datetime.now(ZoneInfo(TIME_ZONE))
 
 
-def get_required_environment_variable(environment_variable_name: str) -> str:
-    try:
-        return environ[environment_variable_name]
-    except KeyError as e:
-        raise KeyError(
-            f"Environment variable {environment_variable_name} is not set"
-        ) from e
+def create_sql_engine() -> sqlalchemy.engine.base.Engine:
+    if not SQLALCHEMY_DRIVER:
+        if not Path(DATA_DIR).is_dir():
+            raise FileNotFoundError(
+                f'Cannot access database file - directory "{DATA_DIR}" does not exist in app directory'
+            )
+        return sqlalchemy.create_engine(DEFAULT_SQL_URL)
 
-
-def get_required_secret_value(secret_name: str) -> str:
-    try:
-        return _get_secret_value(secret_name)
-    except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
-        raise KeyError(f"Secret {secret_name} is not set") from e
-
-
-def get_optional_secret_value(secret_name: str) -> Optional[str]:
-    try:
-        return _get_secret_value(secret_name)
-    except (FileNotFoundError, IsADirectoryError, PermissionError):
-        return None
-
-
-def _get_secret_value(secret_name: str) -> str:
-    secret_value = Path(f"{SECRET_DIR}/{secret_name}").read_text().strip()
-    return secret_value
+    sql_url = sqlalchemy.URL.create(
+        SQLALCHEMY_DRIVER,
+        SQLALCHEMY_USERNAME,
+        get_sqlalchemy_password(),
+        SQLALCHEMY_HOST,
+        SQLALCHEMY_PORT,
+        SQLALCHEMY_DATABASE,
+        SQLALCHEMY_QUERY,
+    )
+    return sqlalchemy.create_engine(sql_url)

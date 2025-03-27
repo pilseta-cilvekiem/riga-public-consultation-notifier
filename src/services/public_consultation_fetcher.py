@@ -2,9 +2,9 @@ import requests
 from bs4 import BeautifulSoup, Tag
 from fake_useragent import UserAgent
 
-from ..constants import ROOT_URL
 from ..enums.public_consultation_type import PublicConsultationType
 from ..models.public_consultation import PublicConsultation
+from ..parameters import ROOT_URL
 
 
 class PublicConsultationFetcher:

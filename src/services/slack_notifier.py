@@ -2,21 +2,17 @@ from urllib import parse
 
 from slack_sdk import WebClient
 
-from ..constants import ROOT_URL
 from ..models.public_consultation import PublicConsultation
-from ..utils import get_required_environment_variable, get_required_secret_value
+from ..parameters import ROOT_URL, SLACK_CHANNEL_ID, get_slack_bot_user_oauth_token
 
 
 class SlackNotifier:
     def __init__(self) -> None:
-        self.slack_client = WebClient(
-            token=get_required_secret_value("slack_bot_user_oauth_token")
-        )
-        self.slack_channel_id = get_required_environment_variable("SLACK_CHANNEL_ID")
+        self.slack_client = WebClient(token=get_slack_bot_user_oauth_token())
 
     def post_message(self, message: str) -> None:
         self.slack_client.chat_postMessage(
-            channel=self.slack_channel_id,
+            channel=SLACK_CHANNEL_ID,
             text=message,
         )
 
