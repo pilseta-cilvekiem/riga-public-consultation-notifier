@@ -11,25 +11,25 @@ from .models.model_base import ModelBase
 from .models.public_consultation import PublicConsultation
 from .services.public_consultation_fetcher import PublicConsultationFetcher
 from .services.slack_notifier import SlackNotifier
-from .utils import (
-    get_current_time,
-    get_optional_secret_value,
-    get_required_environment_variable,
-)
+from .utils import get_current_time, get_optional_secret_value
 
 slack_notifier = SlackNotifier()
 try:
     with PublicConsultationFetcher() as public_consultation_fetcher:
-        sql_query_json = environ.get("SQLALCHEMY_QUERY_JSON")
-        sql_url = sqlalchemy.URL.create(
-            get_required_environment_variable("SQLALCHEMY_DRIVER"),
-            environ.get("SQLALCHEMY_USERNAME"),
-            get_optional_secret_value("sqlalchemy_password"),
-            environ.get("SQLALCHEMY_HOST"),
-            environ.get("SQLALCHEMY_PORT"),
-            environ.get("SQLALCHEMY_DATABASE"),
-            json.loads(sql_query_json) if sql_query_json else None,
-        )
+        sqlalchemy_driver = environ.get("SQLALCHEMY_DRIVER")
+        if sqlalchemy_driver:
+            sql_query_json = environ.get("SQLALCHEMY_QUERY_JSON")
+            sql_url = sqlalchemy.URL.create(
+                sqlalchemy_driver,
+                environ.get("SQLALCHEMY_USERNAME"),
+                get_optional_secret_value("sqlalchemy_password"),
+                environ.get("SQLALCHEMY_HOST"),
+                environ.get("SQLALCHEMY_PORT"),
+                environ.get("SQLALCHEMY_DATABASE"),
+                json.loads(sql_query_json) if sql_query_json else None,
+            )
+        else:
+            sql_url = "sqlite:///data/sqlite.db"
         sql_engine = create_engine(sql_url)
         ModelBase.metadata.create_all(sql_engine)
         with sqlalchemy.orm.Session(sql_engine) as sql_session:
