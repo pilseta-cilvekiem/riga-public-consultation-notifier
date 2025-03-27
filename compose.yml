@@ -10,7 +10,7 @@ services:
 
 secrets:
   slack_bot_user_oauth_token:
-    file: ./secrets/slack_bot_user_oauth_token
+    file: secrets/slack_bot_user_oauth_token
 
 volumes:
   data:
