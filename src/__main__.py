@@ -27,6 +27,8 @@ try:
                     )
                 )
                 for public_consultation in public_consultations:
+                    if public_consultation.is_closed:
+                        continue
                     is_posted_to_slack = public_consultation.retrieve(sql_session)
                     if not is_posted_to_slack:
                         slack_notifier.post_public_consultation(public_consultation)

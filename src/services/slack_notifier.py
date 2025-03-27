@@ -21,9 +21,6 @@ class SlackNotifier:
         )
 
     def post_public_consultation(self, public_consultation: PublicConsultation) -> None:
-        if public_consultation.is_closed:
-            return
-
         message_lines = [
             public_consultation.type.display_name,
             f"*<{ROOT_URL}{parse.quote(public_consultation.path)}|{_escape(public_consultation.description)}>*",
