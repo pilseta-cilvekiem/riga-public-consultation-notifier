@@ -1,6 +1,7 @@
 import json
 from datetime import timedelta
 from os import environ
+from pathlib import Path
 
 import sqlalchemy
 import sqlalchemy.orm
@@ -29,7 +30,12 @@ try:
                 json.loads(sql_query_json) if sql_query_json else None,
             )
         else:
-            sql_url = "sqlite:///data/sqlite.db"
+            DATA_DIR = "data"
+            if not Path(DATA_DIR).is_dir():
+                raise FileNotFoundError(
+                    f'Cannot access database file - directory "{DATA_DIR}" does not exist in app directory'
+                )
+            sql_url = f"sqlite:///{DATA_DIR}/sqlite.db"
         sql_engine = create_engine(sql_url)
         ModelBase.metadata.create_all(sql_engine)
         with sqlalchemy.orm.Session(sql_engine) as sql_session:
