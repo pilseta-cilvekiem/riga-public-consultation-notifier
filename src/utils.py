@@ -1,5 +1,6 @@
 from datetime import datetime
 from os import environ
+from pathlib import Path
 from typing import Optional
 from zoneinfo import ZoneInfo
 
@@ -34,6 +35,5 @@ def get_optional_secret_value(secret_name: str) -> Optional[str]:
 
 
 def _get_secret_value(secret_name: str) -> str:
-    with open(f"{SECRET_DIR}/{secret_name}") as secret_file:
-        secret_value = secret_file.read().strip()
-        return secret_value
+    secret_value = Path(f"{SECRET_DIR}/{secret_name}").read_text().strip()
+    return secret_value
