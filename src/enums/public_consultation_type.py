@@ -9,15 +9,16 @@ class PublicConsultationType(Enum):
     @property
     def display_name(self) -> str:
         return {
-            self.ATTISTIBAS_PLANOSANAS_DOKUMENTI: "Attīstības plānošanas dokuments",
-            self.PUBLISKAS_APSPRIESANAS: "Publiskā apspriešana",
-            self.SAISTOSO_NOTEIKUMU_PROJEKTI: "Saistošo noteikumu projekts",
+            PublicConsultationType.ATTISTIBAS_PLANOSANAS_DOKUMENTI: "Attīstības plānošanas dokuments",
+            PublicConsultationType.PUBLISKAS_APSPRIESANAS: "Publiskā apspriešana",
+            PublicConsultationType.SAISTOSO_NOTEIKUMU_PROJEKTI: "Saistošo noteikumu projekts",
         }[self]
 
     @property
     def dates_field_name(self) -> str:
-        return {
-            self.ATTISTIBAS_PLANOSANAS_DOKUMENTI: "Publicēšanas datums",
-            self.PUBLISKAS_APSPRIESANAS: "Apspriešanas periods",
-            self.SAISTOSO_NOTEIKUMU_PROJEKTI: "Termiņš viedokļa izteikšanai",
-        }[self]
+        DATES_FIELD_NAMES = {
+            PublicConsultationType.ATTISTIBAS_PLANOSANAS_DOKUMENTI: "Publicēšanas datums",
+            PublicConsultationType.PUBLISKAS_APSPRIESANAS: "Apspriešanas periods",
+            PublicConsultationType.SAISTOSO_NOTEIKUMU_PROJEKTI: "Termiņš viedokļa izteikšanai",
+        }
+        return DATES_FIELD_NAMES[self]
