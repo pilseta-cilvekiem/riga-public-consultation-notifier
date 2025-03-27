@@ -4,13 +4,13 @@ from slack_sdk import WebClient
 
 from ..constants import ROOT_URL
 from ..models.public_consultation import PublicConsultation
-from ..utils import get_required_environment_variable, get_secret_value
+from ..utils import get_required_environment_variable, get_required_secret_value
 
 
 class SlackNotifier:
     def __init__(self) -> None:
         self.slack_client = WebClient(
-            token=get_secret_value("slack_bot_user_oauth_token")
+            token=get_required_secret_value("slack_bot_user_oauth_token")
         )
         self.slack_channel_id = get_required_environment_variable("SLACK_CHANNEL_ID")
 
