@@ -38,8 +38,8 @@ class PublicConsultationFetcher:
         )
         public_consultations = list(map(_create_public_consultation, article_divs))
         if pager_nav is not None and not public_consultations[-1].is_closed:
-            raise ValueError(
-                "There are more public consultations to fetch on the next page"
+            raise NotImplementedError(
+                "There are more public consultations to fetch on the next page, multiple page fetching is not implemented"
             )
         return public_consultations
 
@@ -72,14 +72,14 @@ def _create_field(field_element: Tag) -> tuple[str, str]:
 def _find_optional_tag(tag: Tag, name, recursive: bool, **kwargs) -> Tag | None:
     find_result = tag.find(name, recursive=recursive, **kwargs)
     if find_result is not None and not isinstance(find_result, Tag):
-        raise ValueError(f"Expected a Tag object, got {type(find_result)}")
+        raise TypeError(f"Expected a Tag object, got {type(find_result)}")
     return find_result
 
 
 def _find_required_tag(tag: Tag, name, recursive: bool, **kwargs) -> Tag:
     find_result = tag.find(name, recursive=recursive, **kwargs)
     if not isinstance(find_result, Tag):
-        raise ValueError(f"Expected a Tag object, got {type(find_result)}")
+        raise TypeError(f"Expected a Tag object, got {type(find_result)}")
     return find_result
 
 
@@ -94,5 +94,5 @@ def _find_all_tags(tag: Tag, name, recursive: bool, **kwargs) -> list[Tag]:
 def _get_attribute_value(tag: Tag, attribute_name: str) -> str:
     attribute_value = tag.get(attribute_name)
     if not isinstance(attribute_value, str):
-        raise ValueError(f"Expected a string, got {type(attribute_value)}")
+        raise TypeError(f"Expected a string, got {type(attribute_value)}")
     return attribute_value
