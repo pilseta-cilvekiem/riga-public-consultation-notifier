@@ -174,7 +174,7 @@ cython_debug/
 .pypirc
 
 # SQLite database file
-sqlite.db
+data/
 
 # Docker Compose secrets
-secrets
+secrets/
