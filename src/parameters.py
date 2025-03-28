@@ -57,7 +57,7 @@ DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS = int(
 )
 DEFAULT_SQL_URL = f"sqlite:///{DATA_DIR}/sqlite.db"
 ENABLED_PUBLIC_CONSULTATION_TYPES = _get_enabled_public_consultation_types(
-    getenv("PUBLIC_CONSULTATION_TYPES", "")
+    getenv("ENABLED_PUBLIC_CONSULTATION_TYPES", "")
 )
 ROOT_URL = "https://www.riga.lv"
 SECRET_DIR = getenv("SECRET_DIR", "secrets")
