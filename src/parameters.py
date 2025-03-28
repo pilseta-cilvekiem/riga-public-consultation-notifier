@@ -6,8 +6,9 @@ from urllib.parse import parse_qs
 from .enums.public_consultation_type import PublicConsultationType
 
 
-def _get_enabled_public_consultation_types() -> list[PublicConsultationType]:
-    public_consultation_types_string = getenv("PUBLIC_CONSULTATION_TYPES", "")
+def _get_enabled_public_consultation_types(
+    public_consultation_types_string: str,
+) -> list[PublicConsultationType]:
     public_consultation_type_strings = [
         public_consultation_type_string.strip()
         for public_consultation_type_string in public_consultation_types_string.split(
@@ -55,7 +56,9 @@ DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS = int(
     getenv("DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS", 365)
 )
 DEFAULT_SQL_URL = f"sqlite:///{DATA_DIR}/sqlite.db"
-ENABLED_PUBLIC_CONSULTATION_TYPES = _get_enabled_public_consultation_types()
+ENABLED_PUBLIC_CONSULTATION_TYPES = _get_enabled_public_consultation_types(
+    getenv("PUBLIC_CONSULTATION_TYPES", "")
+)
 ROOT_URL = "https://www.riga.lv"
 SECRET_DIR = getenv("SECRET_DIR", "secrets")
 SLACK_CHANNEL_ID = _get_required_environment_variable("SLACK_CHANNEL_ID")
