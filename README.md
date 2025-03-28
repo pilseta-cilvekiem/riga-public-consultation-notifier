@@ -36,7 +36,7 @@ Docker app which checks for new public consultations on the Riga municipality we
 
 ### Optional environment variables
 
-- **DATABASE_DRIVER** - [SQLAlchemy database driver](https://docs.sqlalchemy.org/en/latest/core/engines.html#backend-specific-urls). If not set, use SQLite database located in **data/sqlite.db** in app directory
+- **DATABASE_DRIVER** - [SQLAlchemy database driver](https://docs.sqlalchemy.org/en/latest/core/engines.html#backend-specific-urls). If not set, the app will create (if doesn't exist) and use the SQLite database located in **data/sqlite.db** in app directory
 - **DATABASE_HOST** - database host
 - **DATABASE_NAME** - database name
 - **DATABASE_PORT** - database port
