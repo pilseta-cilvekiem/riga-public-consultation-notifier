@@ -5,14 +5,14 @@ from zoneinfo import ZoneInfo
 import sqlalchemy
 
 from .parameters import (
-    DATA_DIR,
-    DEFAULT_SQL_URL,
-    SQL_DATABASE,
-    SQL_DRIVER,
-    SQL_HOST,
-    SQL_PORT,
-    SQL_QUERY_STRING_PARAMETERS,
-    SQL_USERNAME,
+    DATA_DIRECTORY,
+    DATABASE_DRIVER,
+    DATABASE_HOST,
+    DATABASE_NAME,
+    DATABASE_PORT,
+    DATABASE_QUERY_STRING_PARAMETERS,
+    DATABASE_USERNAME,
+    DEFAULT_DATABASE_URL,
     TIME_ZONE,
     get_sqlalchemy_password,
 )
@@ -23,20 +23,20 @@ def get_current_time():
 
 
 def create_sql_engine() -> sqlalchemy.engine.base.Engine:
-    if not SQL_DRIVER:
-        if not Path(DATA_DIR).is_dir():
+    if not DATABASE_DRIVER:
+        if not Path(DATA_DIRECTORY).is_dir():
             raise FileNotFoundError(
-                f'Cannot access database file - directory "{DATA_DIR}" does not exist in app directory'
+                f'Cannot access database file - directory "{DATA_DIRECTORY}" does not exist in app directory'
             )
-        return sqlalchemy.create_engine(DEFAULT_SQL_URL)
+        return sqlalchemy.create_engine(DEFAULT_DATABASE_URL)
 
     sql_url = sqlalchemy.URL.create(
-        SQL_DRIVER,
-        SQL_USERNAME,
+        DATABASE_DRIVER,
+        DATABASE_USERNAME,
         get_sqlalchemy_password(),
-        SQL_HOST,
-        SQL_PORT,
-        SQL_DATABASE,
-        SQL_QUERY_STRING_PARAMETERS,
+        DATABASE_HOST,
+        DATABASE_PORT,
+        DATABASE_NAME,
+        DATABASE_QUERY_STRING_PARAMETERS,
     )
     return sqlalchemy.create_engine(sql_url)

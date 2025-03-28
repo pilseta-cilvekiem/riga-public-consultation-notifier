@@ -51,24 +51,24 @@ def _get_secret_value(secret_name: str) -> str:
     return secret_value
 
 
-DATA_DIR = "data"
+DATA_DIRECTORY = "data"
 DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS = int(
     getenv("DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS", 365)
 )
-DEFAULT_SQL_URL = f"sqlite:///{DATA_DIR}/sqlite.db"
+DEFAULT_DATABASE_URL = f"sqlite:///{DATA_DIRECTORY}/sqlite.db"
 ENABLED_PUBLIC_CONSULTATION_TYPES = _get_enabled_public_consultation_types(
     getenv("ENABLED_PUBLIC_CONSULTATION_TYPES", "")
 )
 ROOT_URL = "https://www.riga.lv"
 SECRET_DIR = getenv("SECRET_DIR", "secrets")
 SLACK_CHANNEL_ID = _get_required_environment_variable("SLACK_CHANNEL_ID")
-SQL_DATABASE = getenv("SQL_DATABASE")
-SQL_DRIVER = getenv("SQL_DRIVER")
-SQL_HOST = getenv("SQL_HOST")
-sqlalchemy_port_string = getenv("SQL_PORT")
-SQL_PORT = int(sqlalchemy_port_string) if sqlalchemy_port_string else None
-SQL_QUERY_STRING_PARAMETERS = parse_qs(getenv("SQL_QUERY_STRING_PARAMETERS"))
-SQL_USERNAME = getenv("SQL_USERNAME")
+DATABASE_NAME = getenv("DATABASE_NAME")
+DATABASE_DRIVER = getenv("DATABASE_DRIVER")
+DATABASE_HOST = getenv("DATABASE_HOST")
+sqlalchemy_port_string = getenv("DATABASE_PORT")
+DATABASE_PORT = int(sqlalchemy_port_string) if sqlalchemy_port_string else None
+DATABASE_QUERY_STRING_PARAMETERS = parse_qs(getenv("DATABASE_QUERY_STRING_PARAMETERS"))
+DATABASE_USERNAME = getenv("DATABASE_USERNAME")
 TIME_ZONE = getenv("TIME_ZONE", "Europe/Riga")
 
 
