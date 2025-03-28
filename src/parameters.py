@@ -66,7 +66,7 @@ sqlalchemy_port_string = environ.get("SQLALCHEMY_PORT")
 SQLALCHEMY_PORT = int(sqlalchemy_port_string) if sqlalchemy_port_string else None
 SQLALCHEMY_QUERY = parse_qs(environ.get("SQLALCHEMY_QUERY_STRING"))
 SQLALCHEMY_USERNAME = environ.get("SQLALCHEMY_USERNAME")
-TIME_ZONE = "Europe/Riga"
+TIME_ZONE = environ.get("TIME_ZONE", "Europe/Riga")
 
 
 def get_slack_bot_user_oauth_token() -> str:
