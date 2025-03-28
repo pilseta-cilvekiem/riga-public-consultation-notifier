@@ -52,6 +52,13 @@ def _get_secret_value(secret_name: str) -> str:
 
 
 DATA_DIRECTORY = "data"
+DATABASE_DRIVER = getenv("DATABASE_DRIVER")
+DATABASE_HOST = getenv("DATABASE_HOST")
+sqlalchemy_port_string = getenv("DATABASE_PORT")
+DATABASE_NAME = getenv("DATABASE_NAME")
+DATABASE_PORT = int(sqlalchemy_port_string) if sqlalchemy_port_string else None
+DATABASE_QUERY_STRING_PARAMETERS = parse_qs(getenv("DATABASE_QUERY_STRING_PARAMETERS"))
+DATABASE_USERNAME = getenv("DATABASE_USERNAME")
 DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS = int(
     getenv("DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS", 365)
 )
@@ -62,13 +69,6 @@ ENABLED_PUBLIC_CONSULTATION_TYPES = _get_enabled_public_consultation_types(
 ROOT_URL = "https://www.riga.lv"
 SECRET_DIR = getenv("SECRET_DIR", "secrets")
 SLACK_CHANNEL_ID = _get_required_environment_variable("SLACK_CHANNEL_ID")
-DATABASE_NAME = getenv("DATABASE_NAME")
-DATABASE_DRIVER = getenv("DATABASE_DRIVER")
-DATABASE_HOST = getenv("DATABASE_HOST")
-sqlalchemy_port_string = getenv("DATABASE_PORT")
-DATABASE_PORT = int(sqlalchemy_port_string) if sqlalchemy_port_string else None
-DATABASE_QUERY_STRING_PARAMETERS = parse_qs(getenv("DATABASE_QUERY_STRING_PARAMETERS"))
-DATABASE_USERNAME = getenv("DATABASE_USERNAME")
 TIME_ZONE = getenv("TIME_ZONE", "Europe/Riga")
 
 
