@@ -78,8 +78,8 @@ TIME_ZONE = getenv("TIME_ZONE", "Europe/Riga")
 
 
 def get_slack_bot_user_oauth_token() -> str:
-    return _get_required_secret_value("slack_bot_user_oauth_token")
+    return _get_required_secret_value("slack-bot-user-oauth-token")
 
 
 def get_database_password() -> Optional[str]:
-    return _get_optional_secret_value("database_password")
+    return _get_optional_secret_value("database-password")

@@ -4,16 +4,16 @@ services:
     env_file:
       - .env
     secrets:
-      - slack_bot_user_oauth_token
-      - database_password
+      - slack-bot-user-oauth-token
+      - database-password
     volumes:
       - data:/app/data
 
 secrets:
-  slack_bot_user_oauth_token:
-    file: secrets/slack_bot_user_oauth_token
-  database_password:
-    file: secrets/database_password
+  slack-bot-user-oauth-token:
+    file: secrets/slack-bot-user-oauth-token
+  database-password:
+    file: secrets/database-password
 
 volumes:
   data:

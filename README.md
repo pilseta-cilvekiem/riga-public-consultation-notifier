@@ -32,7 +32,7 @@ Docker app which checks for new public consultations on the Riga municipality we
 
 ### Required secrets
 
-- **slack_bot_user_oauth_token** - Slack Bot User OAuth Token you copied earlier
+- **slack-bot-user-oauth-token** - Slack Bot User OAuth Token you copied earlier
 
 ### Optional environment variables
 
@@ -49,7 +49,7 @@ Docker app which checks for new public consultations on the Riga municipality we
 
 ### Optional secrets
 
-- **database_password** - database password
+- **database-password** - database password
 
 ### Build and run with Docker Compose
 
