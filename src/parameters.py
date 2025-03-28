@@ -81,5 +81,5 @@ def get_slack_bot_user_oauth_token() -> str:
     return _get_required_secret_value("slack_bot_user_oauth_token")
 
 
-def get_sqlalchemy_password() -> Optional[str]:
-    return _get_optional_secret_value("sqlalchemy_password")
+def get_database_password() -> Optional[str]:
+    return _get_optional_secret_value("database_password")

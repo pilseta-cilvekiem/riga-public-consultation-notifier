@@ -14,7 +14,7 @@ from .parameters import (
     DATABASE_USERNAME,
     DEFAULT_DATABASE_URL,
     TIME_ZONE,
-    get_sqlalchemy_password,
+    get_database_password,
 )
 
 
@@ -33,7 +33,7 @@ def create_sql_engine() -> sqlalchemy.engine.base.Engine:
     sql_url = sqlalchemy.URL.create(
         DATABASE_DRIVER,
         DATABASE_USERNAME,
-        get_sqlalchemy_password(),
+        get_database_password(),
         DATABASE_HOST,
         DATABASE_PORT,
         DATABASE_NAME,
