@@ -59,8 +59,13 @@ DATABASE_NAME = getenv("DATABASE_NAME")
 DATABASE_PORT = int(sqlalchemy_port_string) if sqlalchemy_port_string else None
 DATABASE_QUERY_STRING_PARAMETERS = parse_qs(getenv("DATABASE_QUERY_STRING_PARAMETERS"))
 DATABASE_USERNAME = getenv("DATABASE_USERNAME")
-DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS = int(
-    getenv("DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS", 365)
+days_to_store_inactive_public_consultations = getenv(
+    "DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS", 365
+)
+DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS = (
+    int(days_to_store_inactive_public_consultations)
+    if days_to_store_inactive_public_consultations
+    else None
 )
 DEFAULT_DATABASE_URL = f"sqlite:///{DATA_DIRECTORY}/sqlite.db"
 ENABLED_PUBLIC_CONSULTATION_TYPES = _get_enabled_public_consultation_types(

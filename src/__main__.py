@@ -34,15 +34,16 @@ try:
                     public_consultation.name = public_consultation.name
                     sql_session.merge(public_consultation)
                     sql_session.commit()
-            delete_inactive_public_consultations_older_than = (
-                get_current_time()
-                - timedelta(days=DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS)
-            )
-            sql_session.query(PublicConsultation).filter(
-                PublicConsultation.last_fetched_at
-                < delete_inactive_public_consultations_older_than
-            ).delete()
-            sql_session.commit()
+            if DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS:
+                delete_inactive_public_consultations_older_than = (
+                    get_current_time()
+                    - timedelta(days=DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS)
+                )
+                sql_session.query(PublicConsultation).filter(
+                    PublicConsultation.last_fetched_at
+                    < delete_inactive_public_consultations_older_than
+                ).delete()
+                sql_session.commit()
 except Exception as e:
     slack_notifier.post_message(f"Check for new public consultations failed:\n{e}")
     raise
