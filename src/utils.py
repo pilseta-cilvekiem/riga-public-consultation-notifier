@@ -7,12 +7,12 @@ import sqlalchemy
 from .parameters import (
     DATA_DIR,
     DEFAULT_SQL_URL,
-    SQLALCHEMY_DATABASE,
-    SQLALCHEMY_DRIVER,
-    SQLALCHEMY_HOST,
-    SQLALCHEMY_PORT,
-    SQLALCHEMY_QUERY,
-    SQLALCHEMY_USERNAME,
+    SQL_DATABASE,
+    SQL_DRIVER,
+    SQL_HOST,
+    SQL_PORT,
+    SQL_QUERY_STRING_PARAMETERS,
+    SQL_USERNAME,
     TIME_ZONE,
     get_sqlalchemy_password,
 )
@@ -23,7 +23,7 @@ def get_current_time():
 
 
 def create_sql_engine() -> sqlalchemy.engine.base.Engine:
-    if not SQLALCHEMY_DRIVER:
+    if not SQL_DRIVER:
         if not Path(DATA_DIR).is_dir():
             raise FileNotFoundError(
                 f'Cannot access database file - directory "{DATA_DIR}" does not exist in app directory'
@@ -31,12 +31,12 @@ def create_sql_engine() -> sqlalchemy.engine.base.Engine:
         return sqlalchemy.create_engine(DEFAULT_SQL_URL)
 
     sql_url = sqlalchemy.URL.create(
-        SQLALCHEMY_DRIVER,
-        SQLALCHEMY_USERNAME,
+        SQL_DRIVER,
+        SQL_USERNAME,
         get_sqlalchemy_password(),
-        SQLALCHEMY_HOST,
-        SQLALCHEMY_PORT,
-        SQLALCHEMY_DATABASE,
-        SQLALCHEMY_QUERY,
+        SQL_HOST,
+        SQL_PORT,
+        SQL_DATABASE,
+        SQL_QUERY_STRING_PARAMETERS,
     )
     return sqlalchemy.create_engine(sql_url)

@@ -62,13 +62,13 @@ ENABLED_PUBLIC_CONSULTATION_TYPES = _get_enabled_public_consultation_types(
 ROOT_URL = "https://www.riga.lv"
 SECRET_DIR = getenv("SECRET_DIR", "secrets")
 SLACK_CHANNEL_ID = _get_required_environment_variable("SLACK_CHANNEL_ID")
-SQLALCHEMY_DATABASE = getenv("SQLALCHEMY_DATABASE")
-SQLALCHEMY_DRIVER = getenv("SQLALCHEMY_DRIVER")
-SQLALCHEMY_HOST = getenv("SQLALCHEMY_HOST")
-sqlalchemy_port_string = getenv("SQLALCHEMY_PORT")
-SQLALCHEMY_PORT = int(sqlalchemy_port_string) if sqlalchemy_port_string else None
-SQLALCHEMY_QUERY = parse_qs(getenv("SQLALCHEMY_QUERY_STRING"))
-SQLALCHEMY_USERNAME = getenv("SQLALCHEMY_USERNAME")
+SQL_DATABASE = getenv("SQL_DATABASE")
+SQL_DRIVER = getenv("SQL_DRIVER")
+SQL_HOST = getenv("SQL_HOST")
+sqlalchemy_port_string = getenv("SQL_PORT")
+SQL_PORT = int(sqlalchemy_port_string) if sqlalchemy_port_string else None
+SQL_QUERY_STRING_PARAMETERS = parse_qs(getenv("SQL_QUERY_STRING_PARAMETERS"))
+SQL_USERNAME = getenv("SQL_USERNAME")
 TIME_ZONE = getenv("TIME_ZONE", "Europe/Riga")
 
 
