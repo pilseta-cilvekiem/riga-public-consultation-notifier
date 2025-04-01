@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional
 
 import sqlalchemy.orm
-from sqlalchemy import Enum, UniqueConstraint
+from sqlalchemy import Enum, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from ..enums.public_consultation_type import PublicConsultationType
@@ -13,11 +13,11 @@ from .model_base import ModelBase
 class PublicConsultation(ModelBase):
     __tablename__ = "public_consultation"
     id: Mapped[int] = mapped_column(primary_key=True)
-    dates: Mapped[str]
-    description: Mapped[str]
+    dates: Mapped[str] = mapped_column(String(255))
+    description: Mapped[str] = mapped_column(String(255))
     last_fetched_at: Mapped[datetime]
-    name: Mapped[str]
-    subtype: Mapped[Optional[str]]
+    name: Mapped[str] = mapped_column(String(255))
+    subtype: Mapped[Optional[str]] = mapped_column(String(255))
     type: Mapped[PublicConsultationType] = mapped_column(
         Enum(
             PublicConsultationType,
