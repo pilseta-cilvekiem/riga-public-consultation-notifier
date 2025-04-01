@@ -2,7 +2,7 @@
 
 Docker app which checks for new public consultations on the Riga municipality website and posts notifications in Slack
 
-## Configuration
+## Installation and configuration
 
 ## Docker
 
@@ -18,16 +18,20 @@ Docker app which checks for new public consultations on the Riga municipality we
 
 - If you don't configure your own database connection, you will need to have mounted persistent storage (Docker volume or bind mount) to /app/data
 
+### Build arguments
+
+- **EXTRA_PIP_INSTALL_ARGS** - provide list of additional PyPI packages to install to support databases other than SQLite.
+
 ### Environment variables
 
 - Can be set in the **.env** file in the repository directory
 
-### Required environment variables
+#### Required
 
 - **SLACK_BOT_USER_OAUTH_TOKEN_FILE** - Slack Bot User OAuth Token file path with token you copied earlier
 - **SLACK_CHANNEL_ID** - Slack channel ID ([how to find it](https://duckduckgo.com/?q=slack+channel+id))
 
-### Optional environment variables
+#### Optional
 
 - **DATABASE_DRIVER** - [SQLAlchemy database driver](https://docs.sqlalchemy.org/en/latest/core/engines.html#backend-specific-urls). If not set, the app will create (if doesn't exist) and use the SQLite database located in **data/sqlite.db** in app directory
 - **DATABASE_HOST** - database host
