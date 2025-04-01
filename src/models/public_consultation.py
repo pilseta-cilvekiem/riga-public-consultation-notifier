@@ -13,11 +13,11 @@ from .model_base import ModelBase
 class PublicConsultation(ModelBase):
     __tablename__ = "public_consultation"
     id: Mapped[int] = mapped_column(primary_key=True)
-    dates: Mapped[str] = mapped_column(String(255))
-    description: Mapped[str] = mapped_column(String(255))
+    dates: Mapped[str] = mapped_column(String(23))
+    description: Mapped[str] = mapped_column(String(140))
     last_fetched_at: Mapped[datetime]
-    name: Mapped[str] = mapped_column(String(255))
-    subtype: Mapped[Optional[str]] = mapped_column(String(255))
+    name: Mapped[str] = mapped_column(String(140))
+    subtype: Mapped[Optional[str]] = mapped_column(String(30))
     type: Mapped[PublicConsultationType] = mapped_column(
         Enum(
             PublicConsultationType,
