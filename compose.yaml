@@ -1,19 +1,20 @@
+# Example Docker Compose file using SQLite.
+
 services:
   app:
     build: .
     env_file:
       - .env
+    environment:
+      - SLACK_BOT_USER_OAUTH_TOKEN_FILE=/run/secrets/slack-bot-user-oauth-token
     secrets:
       - slack-bot-user-oauth-token
-      - database-password
     volumes:
       - data:/app/data
 
 secrets:
   slack-bot-user-oauth-token:
     file: secrets/slack-bot-user-oauth-token
-  database-password:
-    file: secrets/database-password
 
 volumes:
   data:

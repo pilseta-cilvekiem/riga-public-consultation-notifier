@@ -32,30 +32,12 @@ def _get_required_environment_variable(environment_variable_name: str) -> str:
         ) from e
 
 
-def _get_required_secret_value(secret_name: str) -> str:
-    try:
-        return _get_secret_value(secret_name)
-    except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
-        raise KeyError(f"Secret {secret_name} is not set") from e
-
-
-def _get_optional_secret_value(secret_name: str) -> Optional[str]:
-    try:
-        return _get_secret_value(secret_name)
-    except (FileNotFoundError, IsADirectoryError, PermissionError):
-        return None
-
-
-def _get_secret_value(secret_name: str) -> str:
-    secret_value = Path(f"{SECRET_DIR}/{secret_name}").read_text().strip()
-    return secret_value
-
-
 DATA_DIRECTORY = "data"
 DATABASE_DRIVER = getenv("DATABASE_DRIVER")
 DATABASE_HOST = getenv("DATABASE_HOST")
 sqlalchemy_port_string = getenv("DATABASE_PORT")
 DATABASE_NAME = getenv("DATABASE_NAME")
+DATABASE_PASSWORD_FILE = getenv("DATABASE_PASSWORD_FILE")
 DATABASE_PORT = int(sqlalchemy_port_string) if sqlalchemy_port_string else None
 DATABASE_QUERY_STRING_PARAMETERS = parse_qs(getenv("DATABASE_QUERY_STRING_PARAMETERS"))
 DATABASE_USERNAME = getenv("DATABASE_USERNAME")
@@ -72,14 +54,25 @@ ENABLED_PUBLIC_CONSULTATION_TYPES = _get_enabled_public_consultation_types(
     getenv("ENABLED_PUBLIC_CONSULTATION_TYPES", "")
 )
 ROOT_URL = "https://www.riga.lv"
-SECRET_DIR = getenv("SECRET_DIR", "secrets")
+SLACK_BOT_USER_OAUTH_TOKEN_FILE = _get_required_environment_variable(
+    "SLACK_BOT_USER_OAUTH_TOKEN_FILE"
+)
 SLACK_CHANNEL_ID = _get_required_environment_variable("SLACK_CHANNEL_ID")
 TIME_ZONE = getenv("TIME_ZONE", "Europe/Riga")
 
 
 def get_slack_bot_user_oauth_token() -> str:
-    return _get_required_secret_value("slack-bot-user-oauth-token")
+    slack_bot_user_oauth_token = _get_file_contents(SLACK_BOT_USER_OAUTH_TOKEN_FILE)
+    return slack_bot_user_oauth_token
 
 
 def get_database_password() -> Optional[str]:
-    return _get_optional_secret_value("database-password")
+    database_password = (
+        _get_file_contents(DATABASE_PASSWORD_FILE) if DATABASE_PASSWORD_FILE else None
+    )
+    return database_password
+
+
+def _get_file_contents(file_path: str) -> str:
+    file_contents = Path(file_path).read_text().strip()
+    return file_contents
