@@ -1,3 +1,4 @@
+import logging
 from datetime import timedelta
 
 import sqlalchemy
@@ -13,6 +14,12 @@ from .services.public_consultation_fetcher import PublicConsultationFetcher
 from .services.slack_notifier import SlackNotifier
 from .utils import create_sql_engine, get_current_time
 
+logging.basicConfig(
+    level=logging.INFO,  # Set log level
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler()],  # Log to console (stdout)
+)
+logging.info("Check for new public consultations started")
 slack_notifier = SlackNotifier()
 try:
     with PublicConsultationFetcher() as public_consultation_fetcher:
@@ -46,4 +53,6 @@ try:
                 sql_session.commit()
 except Exception as e:
     slack_notifier.post_message(f"Check for new public consultations failed:\n{e}")
+    logging.error(f"Check for new public consultations failed:\n{e}")
     raise
+logging.info("Check for new public consultations completed successfully")
