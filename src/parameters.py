@@ -58,7 +58,6 @@ SLACK_BOT_USER_OAUTH_TOKEN_FILE = _get_required_environment_variable(
     "SLACK_BOT_USER_OAUTH_TOKEN_FILE"
 )
 SLACK_CHANNEL_ID = _get_required_environment_variable("SLACK_CHANNEL_ID")
-TIME_ZONE = getenv("TIME_ZONE", "Europe/Riga")
 
 
 def get_slack_bot_user_oauth_token() -> str:

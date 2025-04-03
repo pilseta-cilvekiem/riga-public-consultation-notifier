@@ -1,4 +1,3 @@
-from datetime import datetime
 from pathlib import Path
 
 import sqlalchemy
@@ -14,10 +13,6 @@ from .parameters import (
     DEFAULT_DATABASE_URL,
     get_database_password,
 )
-
-
-def get_current_time():
-    return datetime.now()  # (ZoneInfo(TIME_ZONE))
 
 
 def create_sql_engine() -> sqlalchemy.engine.base.Engine:

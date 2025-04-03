@@ -6,7 +6,6 @@ from sqlalchemy import Enum, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from ..enums.public_consultation_type import PublicConsultationType
-from ..utils import get_current_time
 from .model_base import ModelBase
 
 
@@ -43,7 +42,7 @@ class PublicConsultation(ModelBase):
         self.dates = fields[self.type.dates_field_name]
         self.description = description
         self.fields = fields
-        self.last_fetched_at = get_current_time()
+        self.last_fetched_at = datetime.now()
         self.path = path
         self.subtype = fields.get("Veids")
 

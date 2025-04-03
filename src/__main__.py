@@ -1,11 +1,9 @@
 import logging
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 import sqlalchemy
 import sqlalchemy.orm
 
-# from pytz import timezone
-# from .custom_log_formatter import CustomLogFormatter
 from .models.model_base import ModelBase
 from .models.public_consultation import PublicConsultation
 from .parameters import (
@@ -14,18 +12,13 @@ from .parameters import (
 )
 from .services.public_consultation_fetcher import PublicConsultationFetcher
 from .services.slack_notifier import SlackNotifier
-from .utils import create_sql_engine, get_current_time
+from .utils import create_sql_engine
 
 logging.basicConfig(
-    level=logging.INFO,  # Set log level
+    level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.StreamHandler()],  # Log to console (stdout)
+    handlers=[logging.StreamHandler()],
 )
-# handler = logging.StreamHandler()
-# handler.setFormatter(CustomLogFormatter("%(asctime)s - %(levelname)s - %(message)s"))
-# logger = logging.getLogger()
-# logger.setLevel(logging.INFO)
-# logger.addHandler(handler)
 
 logging.info("Check for new public consultations started")
 slack_notifier = SlackNotifier()
@@ -51,7 +44,7 @@ try:
                     sql_session.commit()
             if DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS:
                 delete_inactive_public_consultations_older_than = (
-                    get_current_time()
+                    datetime.now()
                     - timedelta(days=DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS)
                 )
                 sql_session.query(PublicConsultation).filter(
