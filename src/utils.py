@@ -19,7 +19,7 @@ from .parameters import (
 
 
 def get_current_time():
-    return datetime.now(ZoneInfo(TIME_ZONE))
+    return datetime.now()  # (ZoneInfo(TIME_ZONE))
 
 
 def create_sql_engine() -> sqlalchemy.engine.base.Engine:

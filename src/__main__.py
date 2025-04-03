@@ -1,10 +1,11 @@
 import logging
 from datetime import timedelta
-from time import localtime
 
 import sqlalchemy
 import sqlalchemy.orm
 
+# from pytz import timezone
+from .custom_log_formatter import CustomLogFormatter
 from .models.model_base import ModelBase
 from .models.public_consultation import PublicConsultation
 from .parameters import (
@@ -20,7 +21,11 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[logging.StreamHandler()],  # Log to console (stdout)
 )
-logging.Formatter.converter = localtime
+# handler = logging.StreamHandler()
+# handler.setFormatter(CustomLogFormatter("%(asctime)s - %(levelname)s - %(message)s"))
+# logger = logging.getLogger()
+# logger.setLevel(logging.INFO)
+# logger.addHandler(handler)
 
 logging.info("Check for new public consultations started")
 slack_notifier = SlackNotifier()
