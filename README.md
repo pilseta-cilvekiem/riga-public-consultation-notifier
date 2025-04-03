@@ -42,7 +42,7 @@ Docker app which checks for new public consultations on the Riga municipality we
 - **DATABASE_USERNAME** - database username
 - **DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS** - after retrieving public consultations, delete public consultations from database if they aren't present on website for more than X days. Set to empty value to keep indefinitely. Default: 365
 - **ENABLED_PUBLIC_CONSULTATION_TYPES** - comma separated list of public consultation types (leading and trailing whitespaces are ignored) to fetch. Supported types: **attistibas-planosanas-dokumenti**, **publiskas-apspriesanas** and **saistoso-noteikumu-projekti**. Default: all
-- **TIME_ZONE** - [time zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) in which to store timestamps in database. Default: Europe/Riga
+- **TIME_ZONE** - [time zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) for timestamps in database and logs. Default: Europe/Riga
 
 ### Build and run with Docker Compose
 

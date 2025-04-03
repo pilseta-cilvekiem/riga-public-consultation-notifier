@@ -1,6 +1,5 @@
 from datetime import datetime
 from pathlib import Path
-from zoneinfo import ZoneInfo
 
 import sqlalchemy
 
@@ -13,7 +12,6 @@ from .parameters import (
     DATABASE_QUERY_STRING_PARAMETERS,
     DATABASE_USERNAME,
     DEFAULT_DATABASE_URL,
-    TIME_ZONE,
     get_database_password,
 )
 
