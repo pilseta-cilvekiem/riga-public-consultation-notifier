@@ -1,5 +1,6 @@
 import logging
 from datetime import timedelta
+from time import localtime
 
 import sqlalchemy
 import sqlalchemy.orm
@@ -19,6 +20,8 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[logging.StreamHandler()],  # Log to console (stdout)
 )
+logging.Formatter.converter = localtime
+
 logging.info("Check for new public consultations started")
 slack_notifier = SlackNotifier()
 try:
