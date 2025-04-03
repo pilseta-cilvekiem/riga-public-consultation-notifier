@@ -5,7 +5,7 @@ import sqlalchemy
 import sqlalchemy.orm
 
 # from pytz import timezone
-from .custom_log_formatter import CustomLogFormatter
+# from .custom_log_formatter import CustomLogFormatter
 from .models.model_base import ModelBase
 from .models.public_consultation import PublicConsultation
 from .parameters import (
