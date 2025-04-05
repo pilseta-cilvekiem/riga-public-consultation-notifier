@@ -1,9 +1,12 @@
+import json
 from datetime import datetime
+from hashlib import sha256
 from typing import Optional
 
 import sqlalchemy.orm
-from sqlalchemy import Enum, String, UniqueConstraint
+from sqlalchemy import Enum, String
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.types import LargeBinary
 
 from ..enums.public_consultation_type import PublicConsultationType
 from .model_base import ModelBase
@@ -12,11 +15,6 @@ from .model_base import ModelBase
 class PublicConsultation(ModelBase):
     __tablename__ = "public_consultation"
     id: Mapped[int] = mapped_column(primary_key=True)
-    dates: Mapped[str] = mapped_column(String(23))
-    description: Mapped[str] = mapped_column(String(157))
-    last_fetched_at: Mapped[datetime]
-    name: Mapped[str] = mapped_column(String(140))
-    subtype: Mapped[Optional[str]] = mapped_column(String(30))
     type: Mapped[PublicConsultationType] = mapped_column(
         Enum(
             PublicConsultationType,
@@ -26,15 +24,12 @@ class PublicConsultation(ModelBase):
             ],
         )
     )
-    __table_args__ = (
-        UniqueConstraint(
-            "dates",
-            "description",
-            "name",
-            "subtype",
-            "type",
-        ),
-    )
+    name: Mapped[str] = mapped_column(String(255))
+    description: Mapped[str] = mapped_column(String(255))
+    subtype: Mapped[Optional[str]] = mapped_column(String(255))
+    dates: Mapped[str] = mapped_column(String(255))
+    hash: Mapped[bytes] = mapped_column(LargeBinary(32), unique=True)
+    last_fetched_at: Mapped[datetime]
 
     def __init__(self, path: str, description: str, fields: dict[str, str]) -> None:
         _, _, typeString, self.name = path.split("/")
@@ -45,6 +40,12 @@ class PublicConsultation(ModelBase):
         self.last_fetched_at = datetime.now()
         self.path = path
         self.subtype = fields.get("Veids")
+        string_to_hash = json.dumps(
+            [self.type.value, self.name, self.description, self.subtype, self.dates],
+            separators=(",", ":"),
+            ensure_ascii=False,
+        )
+        self.hash = sha256(string_to_hash.encode()).digest()
 
     @property
     def is_closed(self) -> bool:
