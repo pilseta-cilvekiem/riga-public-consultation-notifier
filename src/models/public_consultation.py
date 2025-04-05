@@ -4,7 +4,7 @@ from hashlib import sha256
 from typing import Optional
 
 import sqlalchemy.orm
-from sqlalchemy import Enum, String
+from sqlalchemy import Enum, Index, String
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import LargeBinary
 
@@ -28,8 +28,9 @@ class PublicConsultation(ModelBase):
     description: Mapped[str] = mapped_column(String(255))
     subtype: Mapped[Optional[str]] = mapped_column(String(255))
     dates: Mapped[str] = mapped_column(String(255))
-    hash: Mapped[bytes] = mapped_column(LargeBinary(32), unique=True)
+    hash: Mapped[bytes] = mapped_column(LargeBinary(32))
     last_fetched_at: Mapped[datetime]
+    __table_args__ = (Index("idx_hash", "hash", unique=True, mysql_length=32),)
 
     def __init__(self, path: str, description: str, fields: dict[str, str]) -> None:
         _, _, typeString, self.name = path.split("/")
