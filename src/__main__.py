@@ -39,7 +39,6 @@ try:
                     is_posted_to_slack = public_consultation.retrieve(sql_session)
                     if not is_posted_to_slack:
                         slack_notifier.post_public_consultation(public_consultation)
-                    public_consultation.name = public_consultation.name
                     sql_session.merge(public_consultation)
                     sql_session.commit()
             if DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS:
