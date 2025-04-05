@@ -13,7 +13,7 @@ class PublicConsultation(ModelBase):
     __tablename__ = "public_consultation"
     id: Mapped[int] = mapped_column(primary_key=True)
     dates: Mapped[str] = mapped_column(String(23))
-    description: Mapped[str] = mapped_column(String(140))
+    description: Mapped[str] = mapped_column(String(157))
     last_fetched_at: Mapped[datetime]
     name: Mapped[str] = mapped_column(String(140))
     subtype: Mapped[Optional[str]] = mapped_column(String(30))
