@@ -32,9 +32,15 @@ class PublicConsultation(ModelBase):
     last_fetched_at: Mapped[datetime]
     __table_args__ = (Index("idx_hash", "hash", unique=True, mysql_length=32),)
 
-    def __init__(self, path: str, description: str, fields: dict[str, str]) -> None:
-        _, _, typeString, self.name = path.split("/")
-        self.type = PublicConsultationType(typeString)
+    def __init__(
+        self,
+        path: str,
+        description: str,
+        fields: dict[str, str],
+        public_consultation_type: PublicConsultationType,
+    ) -> None:
+        _, _, self.name = path.split("/", 2)
+        self.type = public_consultation_type
         self.dates = fields[self.type.dates_field_name]
         self.description = description
         self.fields = fields

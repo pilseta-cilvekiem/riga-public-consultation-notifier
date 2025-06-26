@@ -1,3 +1,5 @@
+from functools import partial
+
 import requests
 from bs4 import BeautifulSoup, Tag
 from fake_useragent import UserAgent
@@ -36,7 +38,10 @@ class PublicConsultationFetcher:
         pager_nav = _find_optional_tag(
             content_area_div, "nav", recursive=True, class_="pager"
         )
-        public_consultations = list(map(_create_public_consultation, article_divs))
+        create_public_consultation = partial(
+            _create_public_consultation, public_consultation_type
+        )
+        public_consultations = list(map(create_public_consultation, article_divs))
         if pager_nav is not None and not public_consultations[-1].is_closed:
             raise NotImplementedError(
                 "There are more public consultations to fetch on the next page, multiple page fetching is not implemented"
@@ -44,7 +49,9 @@ class PublicConsultationFetcher:
         return public_consultations
 
 
-def _create_public_consultation(article_div: Tag) -> PublicConsultation:
+def _create_public_consultation(
+    public_consultation_type: PublicConsultationType, article_div: Tag
+) -> PublicConsultation:
     link_div = _find_required_tag(
         article_div, "div", recursive=False, class_="catalog-card-top"
     )
@@ -55,7 +62,12 @@ def _create_public_consultation(article_div: Tag) -> PublicConsultation:
     )
     field_divs = _find_all_tags(fields_div, "div", recursive=False)
     fields = dict(map(_create_field, field_divs))
-    return PublicConsultation(_get_attribute_value(link_a, "href"), link_a.text, fields)
+    return PublicConsultation(
+        _get_attribute_value(link_a, "href"),
+        link_a.text,
+        fields,
+        public_consultation_type,
+    )
 
 
 def _create_field(field_element: Tag) -> tuple[str, str]:
