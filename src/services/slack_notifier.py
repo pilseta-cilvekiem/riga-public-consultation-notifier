@@ -11,7 +11,7 @@ class SlackNotifier:
         self.slack_client = WebClient(token=get_slack_bot_user_oauth_token())
 
     def post_message(self, message: str) -> None:
-        self.slack_client.chat_postMessage(
+        self.slack_client.chat_postMessage(  # type: ignore
             channel=SLACK_CHANNEL_ID,
             text=message,
         )

@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 from hashlib import sha256
-from typing import Optional
+from typing import Optional, Type
 
 import sqlalchemy.orm
 from sqlalchemy import Enum, Index, String
@@ -12,16 +12,17 @@ from ..enums.public_consultation_type import PublicConsultationType
 from .model_base import ModelBase
 
 
+def _get_enum_values(enum: Type[PublicConsultationType]) -> list[str]:
+    return [member.value for member in enum]
+
+
 class PublicConsultation(ModelBase):
     __tablename__ = "public_consultation"
     id: Mapped[int] = mapped_column(primary_key=True)
     type: Mapped[PublicConsultationType] = mapped_column(
         Enum(
             PublicConsultationType,
-            values_callable=lambda public_consultation_types: [
-                public_consultation_type.value
-                for public_consultation_type in public_consultation_types
-            ],
+            values_callable=_get_enum_values,
         )
     )
     name: Mapped[str] = mapped_column(String(255))
