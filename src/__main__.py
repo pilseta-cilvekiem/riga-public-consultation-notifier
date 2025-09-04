@@ -52,7 +52,8 @@ try:
                 ).delete()
                 sql_session.commit()
 except Exception as e:
-    slack_notifier.post_message(f"Check for new public consultations failed:\n{e}")
-    logging.error(f"Check for new public consultations failed:\n{e}")
+    error_message = f"Check for new public consultations failed: {type(e).__name__}\n{e}"
+    slack_notifier.post_message(error_message)
+    logging.error(error_message)
     raise
 logging.info("Check for new public consultations completed successfully")

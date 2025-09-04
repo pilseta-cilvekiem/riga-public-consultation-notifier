@@ -28,7 +28,7 @@ class PublicConsultation(ModelBase):
     name: Mapped[str] = mapped_column(String(255))
     description: Mapped[str] = mapped_column(String(255))
     subtype: Mapped[Optional[str]] = mapped_column(String(255))
-    dates: Mapped[str] = mapped_column(String(255))
+    dates: Mapped[Optional[str]] = mapped_column(String(255))
     hash: Mapped[bytes] = mapped_column(LargeBinary(32))
     last_fetched_at: Mapped[datetime]
     __table_args__ = (Index("idx_hash", "hash", unique=True, mysql_length=32),)
@@ -42,7 +42,7 @@ class PublicConsultation(ModelBase):
     ) -> None:
         _, _, self.name = path.split("/", 2)
         self.type = public_consultation_type
-        self.dates = fields[self.type.dates_field_name]
+        self.dates = fields.get(self.type.dates_field_name)
         self.description = description
         self.fields = fields
         self.last_fetched_at = datetime.now()
