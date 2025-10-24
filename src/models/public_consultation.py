@@ -26,7 +26,7 @@ class PublicConsultation(ModelBase):
         )
     )
     name: Mapped[str] = mapped_column(String(255))
-    description: Mapped[str] = mapped_column(String(255))
+    description: Mapped[str] = mapped_column(String(4000))
     subtype: Mapped[Optional[str]] = mapped_column(String(255))
     dates: Mapped[Optional[str]] = mapped_column(String(255))
     hash: Mapped[bytes] = mapped_column(LargeBinary(32))
