@@ -28,7 +28,7 @@ class PublicConsultation(ModelBase):
     name: Mapped[str] = mapped_column(String(255))
     description: Mapped[str] = mapped_column(Unicode(4000))
     subtype: Mapped[Optional[str]] = mapped_column(Unicode(255))
-    dates: Mapped[Optional[str]] = mapped_column(String(255))
+    dates: Mapped[Optional[str]] = mapped_column(Unicode(255))
     hash: Mapped[bytes] = mapped_column(LargeBinary(32))
     last_fetched_at: Mapped[datetime]
     __table_args__ = (Index("idx_hash", "hash", unique=True, mysql_length=32),)
