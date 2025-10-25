@@ -4,7 +4,7 @@ from hashlib import sha256
 from typing import Optional, Type
 
 import sqlalchemy.orm
-from sqlalchemy import Enum, Index, String
+from sqlalchemy import Enum, Index, String, Unicode
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import LargeBinary
 
@@ -26,8 +26,8 @@ class PublicConsultation(ModelBase):
         )
     )
     name: Mapped[str] = mapped_column(String(255))
-    description: Mapped[str] = mapped_column(String(4000))
-    subtype: Mapped[Optional[str]] = mapped_column(String(255))
+    description: Mapped[str] = mapped_column(Unicode(4000))
+    subtype: Mapped[Optional[str]] = mapped_column(Unicode(255))
     dates: Mapped[Optional[str]] = mapped_column(String(255))
     hash: Mapped[bytes] = mapped_column(LargeBinary(32))
     last_fetched_at: Mapped[datetime]

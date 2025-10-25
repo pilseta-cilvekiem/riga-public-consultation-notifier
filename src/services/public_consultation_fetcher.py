@@ -92,8 +92,6 @@ def _find_optional_tag(
     tag: Tag, name: str, recursive: bool, **kwargs: Any
 ) -> Tag | None:
     find_result = tag.find(name, recursive=recursive, **kwargs)
-    if find_result is not None and not isinstance(find_result, Tag):
-        raise TypeError(f"Expected a Tag object, got {type(find_result)}")
     return find_result
 
 
@@ -105,11 +103,7 @@ def _find_required_tag(tag: Tag, name: str, recursive: bool, **kwargs: Any) -> T
 
 
 def _find_all_tags(tag: Tag, name: str, recursive: bool, **kwargs: Any) -> list[Tag]:
-    return [
-        find_result
-        for find_result in tag.find_all(name, recursive=recursive, **kwargs)
-        if isinstance(find_result, Tag)
-    ]
+    return tag.find_all(name, recursive=recursive, **kwargs)
 
 
 def _get_attribute_value(tag: Tag, attribute_name: str) -> str:
