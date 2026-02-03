@@ -17,10 +17,7 @@ from .parameters import (
 
 def create_sql_engine() -> sqlalchemy.engine.base.Engine:
     if not DATABASE_DRIVER:
-        if not Path(DATA_DIRECTORY).is_dir():
-            raise FileNotFoundError(
-                f'Cannot access database file - directory "{DATA_DIRECTORY}" does not exist in app directory'
-            )
+        Path(DATA_DIRECTORY).mkdir(exist_ok=True)
         return sqlalchemy.create_engine(DEFAULT_DATABASE_URL)
 
     sql_url = sqlalchemy.URL.create(
