@@ -1,0 +1,15 @@
+{
+	"build": {
+		"context": "..",
+		"dockerfile": "../Dockerfile"
+	},
+	"name": "pilseta-cilvekiem/riga-public-consultation-notifier",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"charliermarsh.ruff",
+				"ms-python.debugpy"
+			]
+		}
+	}
+}
