@@ -42,17 +42,10 @@ class PublicConsultationFetcher:
         article_divs = _find_all_tags(
             content_area_div, "div", recursive=True, role="article"
         )
-        pager_nav = _find_optional_tag(
-            content_area_div, "nav", recursive=True, class_="pager"
-        )
         create_public_consultation = partial(
             _create_public_consultation, public_consultation_type
         )
         public_consultations = list(map(create_public_consultation, article_divs))
-        if pager_nav is not None and not public_consultations[-1].is_closed:
-            raise NotImplementedError(
-                "There are more public consultations to fetch on the next page, multiple page fetching is not implemented"
-            )
         return public_consultations
 
 
@@ -86,13 +79,6 @@ def _create_field(field_element: Tag) -> tuple[str, str]:
     )
     field_value_span = _find_required_tag(field_value_div, "span", recursive=False)
     return (field_label_div.text, field_value_span.text)
-
-
-def _find_optional_tag(
-    tag: Tag, name: str, recursive: bool, **kwargs: Any
-) -> Tag | None:
-    find_result = tag.find(name, recursive=recursive, **kwargs)
-    return find_result
 
 
 def _find_required_tag(tag: Tag, name: str, recursive: bool, **kwargs: Any) -> Tag:
