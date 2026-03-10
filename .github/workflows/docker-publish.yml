@@ -44,9 +44,10 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          flavor: |
-            latest=${{ github.ref == 'refs/heads/main' }}
-            suffix=-sqlite
+          tags: |
+            type=raw,latest
+            type=raw,sqlite
+            type=ref,event=branch,suffix=-sqlite
 
       - name: Build and push SQLite Docker image
         id: build-and-push-sqlite
@@ -66,9 +67,9 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          flavor: |
-            latest=false
-            suffix=-mysql
+          tags: |
+            type=raw,mysql
+            type=ref,event=branch,suffix=-mysql
 
       - name: Build and push MySQL Docker image
         id: build-and-push-mysql
