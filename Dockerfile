@@ -1,10 +1,15 @@
 FROM python:3
 ARG EXTRA_PIP_INSTALL_ARGS
-ENV TIME_ZONE=Europe/Riga
 WORKDIR /app
-COPY requirements.txt .
+
+ENV TIME_ZONE=Europe/Riga
 RUN ln -fs "/usr/share/zoneinfo/$TIME_ZONE" /etc/localtime && echo "$TIME_ZONE" > /etc/timezone
+
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
 RUN if [ -n "$EXTRA_PIP_INSTALL_ARGS" ]; then pip install --no-cache-dir $EXTRA_PIP_INSTALL_ARGS; fi
+
 COPY src src
+
 CMD [ "python", "-m", "src" ]
