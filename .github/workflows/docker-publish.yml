@@ -28,9 +28,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v4
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
 
@@ -42,23 +39,48 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract Docker metadata
-        id: meta
+      - name: Extract Docker metadata for SQLite image
+        id: meta-sqlite
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           flavor: |
-            latest=${{ github.ref == 'refs/heads/main' }}
+            suffix=-sqlite
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
 
-      - name: Build and push Docker image
-        id: build-and-push
+      - name: Build and push SQLite Docker image
+        id: build-and-push-sqlite
         uses: docker/build-push-action@v6
         with:
           context: .
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta-sqlite.outputs.tags }}
+          labels: ${{ steps.meta-sqlite.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
+
+      - name: Extract Docker metadata for MySQL image
+        id: meta-mysql
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: |
+            suffix=-mysql
+
+      - name: Build and push MySQL Docker image
+        id: build-and-push-mysql
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          build-args: |
+            EXTRA_PIP_INSTALL_ARGS=mysqlclient
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-mysql.outputs.tags }}
+          labels: ${{ steps.meta-mysql.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
