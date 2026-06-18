@@ -38,7 +38,7 @@ class PublicConsultationFetcher:
             soup, "div", recursive=True, id="content-area"
         )
         article_divs = _find_all_tags(
-            content_area_div, "div", recursive=True, role="article"
+            content_area_div, "div", recursive=True, class_="node"
         )
         create_public_consultation = partial(
             _create_public_consultation, public_consultation_type
