@@ -1,4 +1,4 @@
-# riga-public-consultation-notifier
+# Riga Public Consultation Notifier
 
 Docker app written in Python which checks for new public consultations on the Riga municipality website and posts notifications in Slack.
 
