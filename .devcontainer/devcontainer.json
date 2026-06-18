@@ -10,7 +10,8 @@
 		"vscode": {
 			"extensions": [
 				"charliermarsh.ruff",
-				"ms-python.debugpy"
+				"ms-python.debugpy",
+				"qwtel.sqlite-viewer"
 			]
 		}
 	},
