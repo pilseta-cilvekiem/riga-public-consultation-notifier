@@ -1,9 +1,11 @@
 {
 	"build": {
 		"context": "..",
-		"dockerfile": "../Dockerfile"
+		"dockerfile": "Dockerfile",
+		"options": [
+			"--pull"
+		]
 	},
-	"name": "pilseta-cilvekiem/riga-public-consultation-notifier",
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -11,5 +13,9 @@
 				"ms-python.debugpy"
 			]
 		}
-	}
+	},
+	"remoteUser": "notifier",
+	"runArgs": [
+		"--hostname=notifier-dev"
+	]
 }

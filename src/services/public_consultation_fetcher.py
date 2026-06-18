@@ -4,7 +4,6 @@ from typing import Any, Optional, Type
 
 import requests
 from bs4 import BeautifulSoup, Tag
-from fake_useragent import UserAgent
 
 from ..enums.public_consultation_type import PublicConsultationType
 from ..models.public_consultation import PublicConsultation
@@ -12,12 +11,11 @@ from ..parameters import ROOT_URL
 
 
 class PublicConsultationFetcher:
-    def __init__(self) -> None:
-        pass
-
     def __enter__(self):
         self.requests_session = requests.Session()
-        self.requests_session.headers["User-Agent"] = UserAgent().random
+        self.requests_session.headers["User-Agent"] = (
+            "Riga Public Consultation Notifier (+https://github.com/pilseta-cilvekiem/riga-public-consultation-notifier)"
+        )
         return self
 
     def __exit__(

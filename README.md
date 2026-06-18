@@ -4,9 +4,11 @@ Docker app written in Python which checks for new public consultations on the Ri
 
 ## Set up development environment
 
-1. Clone, then open this repository (on Windows, press Ctrl+Shift+P and choose **WSL: Connect to WSL** to clone inside the Windows Subsystem for Linux).
-1. Click **View - Command Pallette... - Dev Containers: Reopen in Container**.
-1. If asked, install Docker.
+1. [VS Code](https://code.visualstudio.com/) with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
+1. Clone this repository. On Windows, press Ctrl+Shift+P and choose **WSL: Connect to WSL** to clone inside the Windows Subsystem for Linux first.
+1. Open the repository folder in VS Code, then press Ctrl+Shift+P and choose **Dev Containers: Reopen in Container**.
+1. Once the container is running, open a terminal and run the app with `run.bash`. The script will prompt you for any missing configuration values on first run.
+1. After that you can also launch app via the Run menu.
 
 ## Installation and configuration
 
@@ -31,12 +33,12 @@ If you don't configure your own database connection, you will need to have mount
 
 ### Environment variables
 
-For development, can be set in the **.env** file in the repository directory.
+Can be set in the **.env** file in the repository directory. When running via **scripts/run.bash**, missing required values are prompted for interactively and saved to **.env** automatically.
 
 #### Required
 
-- **SLACK_BOT_USER_OAUTH_TOKEN_FILE** - Slack Bot User OAuth Token file path with token you copied earlier.
-- **SLACK_CHANNEL_ID** - Slack channel ID ([how to find it](https://duckduckgo.com/?q=slack+channel+id)).
+- **SLACK_BOT_USER_OAUTH_TOKEN_FILE** - path to a file containing the Slack Bot User OAuth Token. Defaults to **secrets/slack_bot_user_oauth_token** in the repository directory. If the file does not exist, the script will prompt for the token and create the file.
+- **SLACK_CHANNEL_ID** - Slack channel ID ([how to find it](https://duckduckgo.com/?q=slack+channel+id)). The script will prompt for this value if it is not set.
 
 #### Optional
 

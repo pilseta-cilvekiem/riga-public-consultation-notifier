@@ -5,11 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python Debugger: Module",
-            "type": "debugpy",
-            "request": "launch",
+            "envFile": "${workspaceFolder}/.env",
             "module": "src",
-            "envFile": "${workspaceFolder}/.env"
+            "name": "Python Debugger: Module",
+            "python": "/usr/local/bin/python3",
+            "request": "launch",
+            "type": "debugpy",
         }
     ]
 }
