@@ -55,10 +55,12 @@ def _create_public_consultation(
     )
     link_h3 = _find_required_tag(link_div, "h3", recursive=False)
     link_a = _find_required_tag(link_h3, "a", recursive=False)
-    fields_div = _find_required_tag(
-        article_div, "div", recursive=True, class_="classifier-row"
+    fields_div = article_div.find("div", recursive=True, class_="classifier-row")
+    field_divs = (
+        _find_all_tags(fields_div, "div", recursive=False)
+        if fields_div is not None
+        else []
     )
-    field_divs = _find_all_tags(fields_div, "div", recursive=False)
     fields = dict(map(_create_field, field_divs))
     return PublicConsultation(
         _get_attribute_value(link_a, "href"),
