@@ -30,7 +30,7 @@ class PublicConsultationFetcher:
         self, public_consultation_type: PublicConsultationType
     ) -> list[PublicConsultation]:
         http_response = self.requests_session.get(
-            f"{ROOT_URL}/lv/{public_consultation_type.value}", timeout=5
+            f"{ROOT_URL}/lv/{public_consultation_type.value}", timeout=10
         )
         http_response.raise_for_status()
         soup = BeautifulSoup(http_response.text, "html.parser")
