@@ -1,6 +1,5 @@
 from os import environ, getenv
 from pathlib import Path
-from typing import Optional
 from urllib.parse import parse_qs
 
 from .enums.public_consultation_type import PublicConsultationType
@@ -42,7 +41,7 @@ DATABASE_PORT = int(sqlalchemy_port_string) if sqlalchemy_port_string else None
 DATABASE_QUERY_STRING_PARAMETERS = parse_qs(getenv("DATABASE_QUERY_STRING_PARAMETERS"))
 DATABASE_USERNAME = getenv("DATABASE_USERNAME")
 days_to_store_inactive_public_consultations = getenv(
-    "DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS", 365
+    "DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS", "365"
 )
 DAYS_TO_STORE_INACTIVE_PUBLIC_CONSULTATIONS = (
     int(days_to_store_inactive_public_consultations)
@@ -65,7 +64,7 @@ def get_slack_bot_user_oauth_token() -> str:
     return slack_bot_user_oauth_token
 
 
-def get_database_password() -> Optional[str]:
+def get_database_password() -> str | None:
     database_password = (
         _get_file_contents(DATABASE_PASSWORD_FILE) if DATABASE_PASSWORD_FILE else None
     )

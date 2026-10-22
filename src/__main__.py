@@ -19,8 +19,9 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[logging.StreamHandler()],
 )
+logger = logging.getLogger(__name__)
 
-logging.info("Check for new public consultations started")
+logger.info("Check for new public consultations started")
 slack_notifier = SlackNotifier()
 try:
     with PublicConsultationFetcher() as public_consultation_fetcher:
@@ -52,8 +53,10 @@ try:
                 ).delete()
                 sql_session.commit()
 except Exception as e:
-    error_message = f"Check for new public consultations failed: {type(e).__name__}\n{e}"
+    error_message = (
+        f"Check for new public consultations failed: {type(e).__name__}\n{e}"
+    )
     slack_notifier.post_message(error_message)
-    logging.error(error_message)
+    logger.error(error_message)
     raise
-logging.info("Check for new public consultations completed successfully")
+logger.info("Check for new public consultations completed successfully")

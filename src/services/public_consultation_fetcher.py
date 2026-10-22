@@ -1,6 +1,6 @@
 from functools import partial
 from types import TracebackType
-from typing import Any, Optional, Type
+from typing import Any
 
 import requests
 from bs4 import BeautifulSoup, Tag
@@ -20,9 +20,9 @@ class PublicConsultationFetcher:
 
     def __exit__(
         self,
-        exc_type: Optional[Type[BaseException]],
-        exc_value: Optional[BaseException],
-        traceback: Optional[TracebackType],
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
     ) -> None:
         self.requests_session.close()
 
