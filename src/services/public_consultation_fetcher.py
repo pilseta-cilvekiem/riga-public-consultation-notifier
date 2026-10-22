@@ -29,9 +29,9 @@ class PublicConsultationFetcher:
     def fetch_public_consultations(
         self, public_consultation_type: PublicConsultationType
     ) -> list[PublicConsultation]:
-        http_response = self.requests_session.get(
-            f"{ROOT_URL}/lv/{public_consultation_type.value}", timeout=15
-        )
+        url = f"{ROOT_URL}/lv/{public_consultation_type.value}"
+        print(f"Fetching {url}")
+        http_response = self.requests_session.get(url, timeout=15)
         http_response.raise_for_status()
         soup = BeautifulSoup(http_response.text, "html.parser")
         content_area_div = _find_required_tag(
